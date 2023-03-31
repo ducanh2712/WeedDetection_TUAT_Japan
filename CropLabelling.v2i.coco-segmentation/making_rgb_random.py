@@ -1,37 +1,31 @@
-from PIL import Image
+# Code for replacing RGB = (0,0,0) values with random Gauss values with mean generated from mean of 3 channel R,G,B
+
 import os
+from PIL import Image
+import random
 import numpy as np
 
+input_dir = "RGB_zero"
 
-image_dir = "RGB_zero"
-
-if not os.path.exists('RGB_random'):
-    os.makedirs('RGB_random')
-
-# Đường dẫn đến thư mục chứa ảnh đã chỉnh sửa
 output_dir = "RGB_random"
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
-# Điều chỉnh độ lệch chuẩn của phân phối Gaussian
-scale = 50
-
-for image_file in os.listdir(image_dir):
-    if image_file.endswith(".jpg"):
-        # Đọc ảnh và tính giá trị trung bình của tất cả các pixel trong ảnh
-        image_path = os.path.join(image_dir, image_file)
-        image = Image.open(image_path)
-        avg_pixel = np.mean(np.asarray(image), axis=(0, 1))
-
-        # Thay thế các pixel có giá trị (R, G, B) = (0, 0, 0)
-        pixels = image.load()
-        width, height = image.size
+for filename in os.listdir(input_dir):
+    if filename.startswith("RGB_") and filename.endswith(".jpg"):
+        img_path = os.path.join(input_dir, filename)
+        img = Image.open(img_path)
+        width, height = img.size
+        means = np.mean(img, axis=(0,1))
         for x in range(width):
             for y in range(height):
-                if pixels[x, y] == (0, 0, 0):
-                    # Sinh giá trị từ phân phối Gaussian sử dụng giá trị trung bình đã tính toán
-                    value = np.random.normal(avg_pixel, scale=scale)
-                    value = np.clip(value, 0, 255).astype(np.uint8)
-                    pixels[x, y] = tuple(value)
+                r, g, b = img.getpixel((x, y))
+                if r <= 20 and g <= 20 and b <= 20:
+                    new_r = random.gauss(means[0], 64)
+                    new_g = random.gauss(means[1], 64)
+                    new_b = random.gauss(means[2], 64)
+                    img.putpixel((x, y), (int(new_r), int(new_g), int(new_b)))
 
-        # Lưu ảnh vào thư mục output_dir
-        output_path = os.path.join(output_dir, image_file)
-        image.save(output_path)
+        new_filename = "Gauss_" + filename.replace("RGB_", "")
+        new_img_path = os.path.join(output_dir, new_filename)
+        img.save(new_img_path)
