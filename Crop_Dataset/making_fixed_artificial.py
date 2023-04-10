@@ -1,10 +1,11 @@
 """
-Maiking fixed and artificial images
+Making fixed and artificial images
 """
 import cv2
 import os
 import numpy as np
 import random
+from tqdm import tqdm
 
 def load_images(directory:str)->list:
     """
@@ -124,8 +125,8 @@ def make_artificial_image_and_cropmask(crop_only:np.ndarray, fixed:np.ndarray)->
     return artificial_image, crop_mask
 
 if __name__ == '__main__':
-    MASK_DIR = './masks'
-    IMG_DIR = './images'
+    MASK_DIR = 'Data/masks'
+    IMG_DIR = 'Data/images'
 
     # 画像が格納されているディレクトリのパスを指定してください
     original_list = load_images(IMG_DIR)
@@ -133,7 +134,7 @@ if __name__ == '__main__':
 
     no_crop_list = []
     crop_only_list = []
-    for original, crop_mask in zip(original_list, crop_mask_list):
+    for original, crop_mask in tqdm(zip(original_list, crop_mask_list)):
         crop_only, no_crop = split_img(original, crop_mask)
         crop_only_list.append(crop_only)
         no_crop_list.append(no_crop)
@@ -145,7 +146,7 @@ if __name__ == '__main__':
 
     artificial_image_list = []
     artificial_mask_list = []
-    for fixed in fixed_list:
+    for fixed in tqdm(fixed_list):
         for crop_only in crop_only_list:
             artificial_image, artificial_mask = make_artificial_image_and_cropmask(crop_only, fixed)
             artificial_image_list.append(artificial_image)
