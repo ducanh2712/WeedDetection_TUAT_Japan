@@ -4,6 +4,7 @@ import os
 from PIL import Image
 import random
 import numpy as np
+from tqdm import tqdm
 
 input_dir = "RGB_zero"
 
@@ -11,7 +12,7 @@ output_dir = "RGB_random"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-for filename in os.listdir(input_dir):
+for filename in tqdm(os.listdir(input_dir)):
     if filename.startswith("RGB_") and ( filename.endswith(".jpg") or filename.endswith(".png")) :
         img_path = os.path.join(input_dir, filename)
         img = Image.open(img_path)

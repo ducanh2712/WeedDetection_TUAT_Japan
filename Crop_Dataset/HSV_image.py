@@ -1,6 +1,7 @@
 import cv2
 import os
 import numpy as np
+from tqdm import tqdm
 
 input_dir = "images"
 
@@ -14,7 +15,7 @@ if not os.path.exists(output_dir_hsv):
 if not os.path.exists(output_dir_mask):
     os.makedirs(output_dir_mask)
 
-for filename in os.listdir(input_dir):
+for filename in tqdm(os.listdir(input_dir)):
     img = cv2.imread(os.path.join(input_dir, filename))
 
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)

@@ -2,6 +2,7 @@ import os
 from PIL import Image
 import random
 import numpy as np
+from tqdm import tqdm
 
 if not os.path.exists('RGB_zero'):
     os.makedirs('RGB_zero')
@@ -10,7 +11,7 @@ mask_dir = 'masks'
 img_dir = 'images'
 
 file_save_path = 'RGB_zero'
-for mask_file in os.listdir(mask_dir):
+for mask_file in tqdm(os.listdir(mask_dir)):
     if mask_file.startswith('MSK_'):
         img_file = mask_file[4:].replace(".png", ".jpg")
         img_path = os.path.join(img_dir, img_file)

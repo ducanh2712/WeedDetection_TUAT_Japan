@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import json
 import shutil
+from tqdm import tqdm
 
 mask_dir = 'masks'
 if not os.path.exists(mask_dir):
@@ -23,7 +24,7 @@ with open(ann_file, 'r') as f:
 
 
 # Vòng lặp qua từng ảnh trong tập dữ liệu
-for img_info in annotations['images']:
+for img_info in tqdm(annotations['images']):
     # Đọc ảnh vào
     img = cv2.imread(os.path.join(img_folder, img_info['file_name']))
 
@@ -43,7 +44,6 @@ for img_info in annotations['images']:
             binary_mask = cv2.bitwise_or(binary_mask, mask_arr)
 
     # Lưu ảnh nhị phân
-    print( img_info['file_name'])
     cv2.imwrite(os.path.join('masks', 'MSK_' + img_info['file_name'].rsplit('.',1)[0] + '.png'), binary_mask)
     
 
