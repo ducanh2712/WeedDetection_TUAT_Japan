@@ -125,8 +125,8 @@ def make_artificial_image_and_cropmask(crop_only:np.ndarray, fixed:np.ndarray)->
     return artificial_image, crop_mask
 
 if __name__ == '__main__':
-    MASK_DIR = 'Data/masks'
-    IMG_DIR = 'Data/images'
+    MASK_DIR = 'Data_fake/masks'
+    IMG_DIR = 'Data_fake/images'
 
     # 画像が格納されているディレクトリのパスを指定してください
     original_list = load_images(IMG_DIR)
@@ -152,5 +152,5 @@ if __name__ == '__main__':
             artificial_image_list.append(artificial_image)
             artificial_mask_list.append(artificial_mask)
     
-    cv2.imshow("Artificial image example",artificial_image_list[-1])
+    cv2.imshow("Artificial image example",artificial_image_list[-2])
     cv2.waitKey(0)
