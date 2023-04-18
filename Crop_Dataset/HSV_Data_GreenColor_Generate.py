@@ -3,7 +3,7 @@ import os
 import numpy as np
 from tqdm import tqdm
 
-input_dir = "Data/images"
+input_dir = "Data_Original/images"
 
 output_dir_hsv = "HSV_data/images"
 
@@ -25,8 +25,8 @@ for filename in tqdm(os.listdir(input_dir)):
 
     mask = cv2.inRange(hsv, lower_green, upper_green)
     result = cv2.bitwise_and(img, img, mask=mask)
-    cv2.imwrite(os.path.join(output_dir_hsv, "HSV_G" + filename.rsplit('.',1)[0] + '.png'), result)
+    cv2.imwrite(os.path.join(output_dir_hsv, filename.rsplit('.',1)[0] + '.png'), result)
 
     mask_binary = np.zeros_like(mask)
-    mask_binary[mask == 255] = 3
-    cv2.imwrite(os.path.join(output_dir_mask, "MSK_HSV_G" + filename.rsplit('.',1)[0] + '.png'), mask_binary)
+    mask_binary[mask == 255] = 1
+    cv2.imwrite(os.path.join(output_dir_mask, filename.rsplit('.',1)[0] + '.png'), mask_binary)

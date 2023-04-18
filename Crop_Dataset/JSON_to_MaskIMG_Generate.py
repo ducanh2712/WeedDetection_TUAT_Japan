@@ -45,5 +45,5 @@ for img_info in tqdm(annotations['images']):
             binary_mask = cv2.bitwise_or(binary_mask, mask_arr)
 
     # Lưu ảnh nhị phân
-    cv2.imwrite(os.path.join(mask_dir, 'MSK_' + img_info['file_name'].rsplit('.',1)[0] + '.png'), binary_mask)
+    cv2.imwrite(os.path.join(mask_dir, img_info['file_name'].rsplit('.',1)[0] + '.png'), binary_mask)
     
